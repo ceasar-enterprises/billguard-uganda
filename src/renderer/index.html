@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'">
+  <title>BillGuard Uganda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-layer"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <div class="app">
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">BG</div>
+        <span class="brand-text">BillGuard</span>
+        <span class="brand-sub">Uganda</span>
+      </div>
+      <div class="sidebar-nav">
+        <button class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">&#9632;</span> Dashboard
+        </button>
+        <button class="nav-item" data-page="accounts">
+          <span class="nav-icon">&#9783;</span> Accounts
+        </button>
+        <button class="nav-item" data-page="bills">
+          <span class="nav-icon">&#9783;</span> Bills
+        </button>
+        <button class="nav-item" data-page="payments">
+          <span class="nav-icon">&#9783;</span> Payments
+        </button>
+        <button class="nav-item" data-page="loans">
+          <span class="nav-icon">&#9783;</span> Loans
+        </button>
+        <button class="nav-item" data-page="ussd">
+          <span class="nav-icon">&#9783;</span> USSD Helper
+        </button>
+        <button class="nav-item" data-page="analytics">
+          <span class="nav-icon">&#9783;</span> Analytics
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <span class="version">v1.0.0</span>
+        <span class="copyright">&copy; 2026 Ceasar</span>
+      </div>
+    </nav>
+
+    <main class="content">
+      <header class="topbar">
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="topbar-actions">
+          <span id="currentDate" class="date-display"></span>
+          <button class="btn btn-primary" id="quickAddBtn">+ Add Bill</button>
+        </div>
+      </header>
+
+      <div id="page-dashboard" class="page active">
+        <div class="stats-grid">
+          <div class="stat-card water">
+            <div class="stat-label">Water Bills</div>
+            <div class="stat-value" id="statWaterPending">UGX 0</div>
+            <div class="stat-sub" id="statWaterCount">0 accounts</div>
+          </div>
+          <div class="stat-card electricity">
+            <div class="stat-label">Electricity</div>
+            <div class="stat-value" id="statElecPending">UGX 0</div>
+            <div class="stat-sub" id="statElecCount">0 accounts</div>
+          </div>
+          <div class="stat-card loans">
+            <div class="stat-label">Loans Owed</div>
+            <div class="stat-value" id="statLoanOwed">UGX 0</div>
+            <div class="stat-sub" id="statLoanCount">0 loans</div>
+          </div>
+          <div class="stat-card overdue">
+            <div class="stat-label">Overdue</div>
+            <div class="stat-value" id="statOverdue">UGX 0</div>
+            <div class="stat-sub" id="statOverdueSub">0 bills</div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Upcoming Bills</h3>
+              <button class="btn btn-sm" onclick="navigateTo('bills')">View All</button>
+            </div>
+            <div class="card-body" id="upcomingBills">
+              <div class="empty-state">No upcoming bills</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Overdue Bills</h3>
+            </div>
+            <div class="card-body" id="overdueBills">
+              <div class="empty-state">No overdue bills</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Payments</h3>
+              <button class="btn btn-sm" onclick="navigateTo('payments')">View All</button>
+            </div>
+            <div class="card-body" id="recentPayments">
+              <div class="empty-state">No payments yet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="page-accounts" class="page">
+        <div class="page-header">
+          <h2>All Accounts</h2>
+          <button class="btn btn-primary" onclick="showAddAccount()">+ Add Account</button>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="water">Water</button>
+          <button class="filter-btn" data-filter="electricity">Electricity</button>
+          <button class="filter-btn" data-filter="loan">Loans</button>
+        </div>
+        <div id="accountsList" class="accounts-grid"></div>
+      </div>
+
+      <div id="page-bills" class="page">
+        <div class="page-header">
+          <h2>All Bills</h2>
+          <button class="btn btn-primary" onclick="showAddBill()">+ Add Bill</button>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pending">Pending</button>
+          <button class="filter-btn" data-filter="paid">Paid</button>
+          <button class="filter-btn" data-filter="overdue">Overdue</button>
+        </div>
+        <div id="billsList" class="table-container"></div>
+      </div>
+
+      <div id="page-payments" class="page">
+        <div class="page-header">
+          <h2>Payment History</h2>
+          <button class="btn btn-primary" onclick="showAddPayment()">+ Record Payment</button>
+        </div>
+        <div id="paymentsList" class="table-container"></div>
+      </div>
+
+      <div id="page-loans" class="page">
+        <div class="page-header">
+          <h2>Loan Tracker</h2>
+          <button class="btn btn-primary" onclick="showAddLoan()">+ Add Loan</button>
+        </div>
+        <div id="loansList" class="loans-grid"></div>
+      </div>
+
+      <div id="page-ussd" class="page">
+        <div class="page-header">
+          <h2>USSD Code Helper</h2>
+        </div>
+        <div class="ussd-grid">
+          <div class="card">
+            <div class="card-header"><h3>NWSC (Water) — MTN</h3></div>
+            <div class="card-body">
+              <p class="ussd-code">*165# &rarr; 4 &rarr; 1 &rarr; 2 &rarr; 1</p>
+              <p class="ussd-desc">Payments &rarr; Utilities &rarr; NWSC &rarr; Check Balance</p>
+              <div class="ussd-accounts" id="ussdNWSC"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>NWSC (Water) — Airtel</h3></div>
+            <div class="card-body">
+              <p class="ussd-code">*185# &rarr; 4 &rarr; 2 &rarr; 2 &rarr; 4</p>
+              <p class="ussd-desc">Pay Bill &rarr; Utilities &rarr; NWSC &rarr; Check Balance</p>
+              <div class="ussd-accounts" id="ussdNWSCAirtel"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>UMEME (Electricity) — MTN</h3></div>
+            <div class="card-body">
+              <p class="ussd-code">*165# &rarr; 4 &rarr; 1 &rarr; 1 &rarr; 3</p>
+              <p class="ussd-desc">Payments &rarr; Utilities &rarr; UMEME &rarr; Check Balance</p>
+              <div class="ussd-accounts" id="ussdUMEME"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>SMS Shortcuts</h3></div>
+            <div class="card-body">
+              <div class="sms-list" id="smsShortcuts">
+                <p class="sms-item"><strong>UMEME:</strong> Send <code>BILL ACCOUNT_NUMBER</code> to <strong>8185</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="page-analytics" class="page">
+        <div class="page-header">
+          <h2>Analytics</h2>
+        </div>
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-header"><h3>Monthly Spending</h3></div>
+            <div class="card-body">
+              <canvas id="monthlyChart" height="250"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Spending by Category</h3></div>
+            <div class="card-body">
+              <canvas id="categoryChart" height="250"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

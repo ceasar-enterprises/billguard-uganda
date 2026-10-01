@@ -1,0 +1,29 @@
+{
+  "name": "billguard-uganda",
+  "version": "1.0.0",
+  "description": "Utility Bill Monitor — Water, Electricity & Loan Tracker for Uganda",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "author": "Ceasar",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "electron": "^33.4.11",
+    "node-notifier": "^10.0.0"
+  },
+  "build": {
+    "appId": "com.ceasar.billguard-uganda",
+    "productName": "BillGuard Uganda",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

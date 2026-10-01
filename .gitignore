@@ -1,0 +1,32 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+out/
+
+# Runtime data and user databases — never commit anyone's bills
+data/
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Electron packaging output
+*.exe
+*.msi
+*.blockmap
+latest*.yml
+
+# Logs and local env
+*.log
+npm-debug.log*
+.env
+.env.local
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
